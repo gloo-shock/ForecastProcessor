@@ -2,4 +2,5 @@ rootProject.name = 'ForecastProcessor'
 rootProject.buildFileName = 'build.gradle.kts'
 rootProject.name = 'ForecastProcessor'
 include 'Console'
+include 'Common'
 
