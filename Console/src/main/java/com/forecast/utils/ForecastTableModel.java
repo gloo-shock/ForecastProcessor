@@ -33,7 +33,7 @@ public class ForecastTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return forecastMap.values().stream().map(Set::size).max(Integer::compareTo).orElse(0);
+        return forecastMap.values().stream().map(Set::size).max(Integer::compareTo).orElse(0) + 1;
     }
 
     @Override
@@ -43,11 +43,17 @@ public class ForecastTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Match match = matches.get(columnIndex);
+        if (rowIndex == 0 && columnIndex == 0) {
+            return "";
+        }
+        Match match = rowIndex == 0 ? null : matches.get(rowIndex - 1);
         if (columnIndex == 0) {
             return match.getHost().getName() + "-" + match.getGuest().getName();
         }
         Person person = persons.get(columnIndex - 1);
+        if (rowIndex == 0) {
+            return person.getFirstName();
+        }
         Forecast forecast = forecastMap.get(person).stream()
                 .filter(forecast1 -> forecast1.getMatch().equals(match))
                 .findAny().orElse(null);
