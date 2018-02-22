@@ -1,13 +1,9 @@
-//****************************************************************************
-// Copyright (c) 1997-2017 F-Secure Corporation. All rights reserved.
-//****************************************************************************
-
 package com.forecast.utils;
 
 import static java.lang.Double.doubleToLongBits;
 
 
-public final class FGridBagConstraints implements Cloneable {
+public final class MyGridBagConstraints implements Cloneable {
 
   public static final int GB_RELATIVE = -1;
   public static final int GB_REMAINDER = 0;
@@ -53,7 +49,7 @@ public final class FGridBagConstraints implements Cloneable {
   int minWidth;
   int minHeight;
 
-  FGridBagConstraints() {
+  MyGridBagConstraints() {
     gridx = GB_RELATIVE;
     gridy = GB_RELATIVE;
     gridwidth = 1;
@@ -74,9 +70,9 @@ public final class FGridBagConstraints implements Cloneable {
   }
 
   @Override
-  public FGridBagConstraints clone() {
+  public MyGridBagConstraints clone() {
     try {
-      return (FGridBagConstraints) super.clone();
+      return (MyGridBagConstraints) super.clone();
     } catch (CloneNotSupportedException ex) {
       throw new RuntimeException(ex);
     }
@@ -87,8 +83,8 @@ public final class FGridBagConstraints implements Cloneable {
     if (obj == this) {
       return true;
     }
-    if (obj instanceof FGridBagConstraints) {
-      FGridBagConstraints that = (FGridBagConstraints) obj;
+    if (obj instanceof MyGridBagConstraints) {
+      MyGridBagConstraints that = (MyGridBagConstraints) obj;
       return
           that.gridx == this.gridx &&
           that.gridy == this.gridy &&

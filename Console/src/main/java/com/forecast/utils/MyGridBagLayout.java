@@ -1,19 +1,15 @@
-//****************************************************************************
-// Copyright (c) 1997-2017 F-Secure Corporation. All rights reserved.
-//****************************************************************************
-
 package com.forecast.utils;
 
-import com.forecast.utils.FGridBagConstraints.Fill;
+import com.forecast.utils.MyGridBagConstraints.Fill;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.forecast.utils.FGridBagConstraints.Anchor.GB_CENTER;
-import static com.forecast.utils.FGridBagConstraints.Fill.GB_NONE;
-import static com.forecast.utils.FGridBagConstraints.GB_RELATIVE;
+import static com.forecast.utils.MyGridBagConstraints.Anchor.GB_CENTER;
+import static com.forecast.utils.MyGridBagConstraints.Fill.GB_NONE;
+import static com.forecast.utils.MyGridBagConstraints.GB_RELATIVE;
 import static java.lang.System.arraycopy;
 
 
@@ -21,7 +17,7 @@ import static java.lang.System.arraycopy;
  * Fixed version of GridBagLayout. Fixes BugId 4254022 (including support for more than 512 components. Also, provides an easy and efficient
  * way to initialize a constraint object reusing a single shared constraint object.
  */
-public final class FGridBagLayout implements LayoutManager2 {
+public final class MyGridBagLayout implements LayoutManager2 {
 
     private static final int MINSIZE = 1;
     private static final int PREFERREDSIZE = 2;
@@ -29,18 +25,18 @@ public final class FGridBagLayout implements LayoutManager2 {
     private static final ThreadLocal sharedConstraintsContainer = new ThreadLocal() {
         @Override
         protected Object initialValue() {
-            return new FGridBagConstraints();
+            return new MyGridBagConstraints();
         }
     };
 
     /**
      * Gets the shared constraints initialized with values like when a constructor java.awt.GridBagConstraints() called.
      */
-    public static FGridBagConstraints getDefaultSharedConstraints() {
+    public static MyGridBagConstraints getDefaultSharedConstraints() {
         return getSharedConstraints(GB_RELATIVE, GB_RELATIVE, 1, 1, 0, 0, GB_CENTER, GB_NONE, 0, 0, 0, 0, 0, 0);
     }
 
-    public static FGridBagConstraints getSharedConstraints
+    public static MyGridBagConstraints getSharedConstraints
             (
                     int gridx,
                     int gridy,
@@ -48,7 +44,7 @@ public final class FGridBagLayout implements LayoutManager2 {
                     int gridheight,
                     double weightx,
                     double weighty,
-                    FGridBagConstraints.Anchor anchor,
+                    MyGridBagConstraints.Anchor anchor,
                     Fill fill,
                     int top, int left, int bottom, int right
             ) {
@@ -60,7 +56,7 @@ public final class FGridBagLayout implements LayoutManager2 {
      * gridwidth, int gridheight, double weightx, double weighty, int anchor, int fill, Insets insets, int ipadx, int ipady ) called with one
      * exception: four ints (top, left, bottom, right) are used instead of an java.awt.Insets object.
      */
-    public static FGridBagConstraints getSharedConstraints
+    public static MyGridBagConstraints getSharedConstraints
     (
             int gridx,       // -1 <Default values>
             int gridy,       // -1
@@ -68,12 +64,12 @@ public final class FGridBagLayout implements LayoutManager2 {
             int gridheight,  // 1
             double weightx,  // 0.0
             double weighty,  // 0.0
-            FGridBagConstraints.Anchor anchor,   // CENTER
+            MyGridBagConstraints.Anchor anchor,   // CENTER
             Fill fill,       // NONE
             int top, int left, int bottom, int right, // 0,0,0,0
             int ipadx, int ipady // 0, 0
     ) {
-        FGridBagConstraints sharedConstraintsInstance = (FGridBagConstraints) sharedConstraintsContainer.get();
+        MyGridBagConstraints sharedConstraintsInstance = (MyGridBagConstraints) sharedConstraintsContainer.get();
 
         sharedConstraintsInstance.gridx = gridx;
         sharedConstraintsInstance.gridy = gridy;
@@ -99,57 +95,57 @@ public final class FGridBagLayout implements LayoutManager2 {
         return new JPanel();
     }
 
-    public static FGridBagConstraints getVerticalStrutConstraints(int gridx, int gridy) {
+    public static MyGridBagConstraints getVerticalStrutConstraints(int gridx, int gridy) {
         return getSharedConstraints(gridx, gridy, 1, 1, 0.0, 1.0, GB_CENTER, GB_NONE, 0, 0, 0, 0, 0, 0);
     }
 
     /**
      * This hashtable maintains the association between a component and its gridbag constraints. Keys in comptable are the components and the
-     * values are the instances of FGridBagConstraints.
+     * values are the instances of MyGridBagConstraints.
      */
-    private final Map<Component, FGridBagConstraints> comptable = new HashMap<>();
+    private final Map<Component, MyGridBagConstraints> comptable = new HashMap<>();
 
     private int currentGridSize;
 
     /**
      * Creates a grid bag layout manager with the initial grid size of 3.
      */
-    public FGridBagLayout() {
+    public MyGridBagLayout() {
         this(10);
     }
 
     /**
      * Creates a grid bag layout manager with the given initial grid size.
      */
-    public FGridBagLayout(int initialGridSize) {
+    public MyGridBagLayout(int initialGridSize) {
         currentGridSize = initialGridSize;
     }
 
     /**
      * Sets the constraints for the specified component in this layout.
      */
-    public void setConstraints(Component comp, FGridBagConstraints constraints) {
+    public void setConstraints(Component comp, MyGridBagConstraints constraints) {
         comptable.put(comp, constraints.clone());
     }
 
     /**
-     * Gets the constraints for the specified component.  A copy of the actual <code>FGridBagConstraints</code> object is returned.
+     * Gets the constraints for the specified component.  A copy of the actual <code>MyGridBagConstraints</code> object is returned.
      *
      * @param comp the component to be queried.
      * @return the constraint for the specified component in this grid bag layout; a copy of the actual constraint object is returned.
      */
-    public FGridBagConstraints getConstraints(Component comp) {
+    public MyGridBagConstraints getConstraints(Component comp) {
         return comptable.get(comp).clone();
     }
 
     /**
      * Retrieves the constraints for the specified component. The return value is not a copy, but is the actual
-     * <code>FGridBagConstraints</code> object used by the layout mechanism.
+     * <code>MyGridBagConstraints</code> object used by the layout mechanism.
      *
      * @param comp the component to be queried
      * @return the constraints for the specified component.
      */
-    private FGridBagConstraints lookupConstraints(Component comp) {
+    private MyGridBagConstraints lookupConstraints(Component comp) {
         return comptable.get(comp);
     }
 
@@ -180,8 +176,8 @@ public final class FGridBagLayout implements LayoutManager2 {
      */
     @Override
     public void addLayoutComponent(Component comp, Object constraints) {
-        if (constraints instanceof FGridBagConstraints) {
-            setConstraints(comp, (FGridBagConstraints) constraints);
+        if (constraints instanceof MyGridBagConstraints) {
+            setConstraints(comp, (MyGridBagConstraints) constraints);
         } else if (constraints != null) {
             throw new IllegalArgumentException("cannot add to layout: constraint must be a FGridBagConstraint");
         }
@@ -268,7 +264,7 @@ public final class FGridBagLayout implements LayoutManager2 {
         int parentHeight = parent.getHeight();
         Component comp;
         int compindex;
-        FGridBagConstraints constraints;
+        MyGridBagConstraints constraints;
         Insets insets = parent.getInsets();
         Component[] components = parent.getComponents();
         Dimension d;
@@ -431,7 +427,7 @@ public final class FGridBagLayout implements LayoutManager2 {
         // layoutInfo.width layoutInfo.height
         FGridBagLayoutInfo layoutInfo = new FGridBagLayoutInfo();
         Component comp;
-        FGridBagConstraints constraints;
+        MyGridBagConstraints constraints;
         Dimension d;
         Component[] components = parent.getComponents();
 
@@ -462,7 +458,7 @@ public final class FGridBagLayout implements LayoutManager2 {
             constraints = lookupConstraints(comp);
 
             if (constraints == null) {
-//        ErrorLog.log("FGridBagLayout: cannot find constraints for " + comp);
+//        ErrorLog.log("MyGridBagLayout: cannot find constraints for " + comp);
             }
 
             curX = constraints.gridx;
@@ -864,7 +860,7 @@ public final class FGridBagLayout implements LayoutManager2 {
      * Adjusts the x, y, width, and height fields to the correct
      * values depending on the constraint geometry and pads.
      */
-    private void adjustForGravity(FGridBagConstraints constraints, Rectangle r) {
+    private void adjustForGravity(MyGridBagConstraints constraints, Rectangle r) {
         int diffx;
         int diffy;
 
