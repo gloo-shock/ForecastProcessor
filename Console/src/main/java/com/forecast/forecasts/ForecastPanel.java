@@ -1,15 +1,22 @@
 package com.forecast.forecasts;
 
+import com.forecast.entries.Forecast;
+import com.forecast.entries.Person;
 import com.forecast.utils.MyGridBagLayout;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static com.forecast.utils.MyGridBagConstraints.Anchor.GB_NORTH;
 import static com.forecast.utils.MyGridBagConstraints.Fill.GB_BOTH;
 
 public class ForecastPanel extends JPanel {
+
+    private final Map<Person, Set<Forecast>> forecastMap = new HashMap<>();
 
     public ForecastPanel() {
         super(new GridBagLayout());
