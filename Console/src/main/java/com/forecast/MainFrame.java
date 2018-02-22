@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
 
     private void initTabbedPane() {
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Прогнозы", new ForecastPanel());
+        tabbedPane.addTab("Прогнозы", new ForecastPanel(this));
         add(tabbedPane);
     }
 }
