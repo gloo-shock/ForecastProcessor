@@ -14,18 +14,15 @@ import static com.forecast.utils.MyGridBagLayout.getSharedConstraints;
 public class ForecastPanel extends JPanel {
 
     private final ForecastTableModel tableModel = new ForecastTableModel();
+    private final AddForecastDialog addDialog;
 
     public ForecastPanel(JFrame parent) {
         super(new MyGridBagLayout());
         JButton addButton = new JButton("Добавить прогноз");
-        addButton.addActionListener(e -> showAddDialog(parent));
+        addDialog = new AddForecastDialog(parent, tableModel);
+        addButton.addActionListener(e -> addDialog.setVisible(true));
         add(addButton, getSharedConstraints(0, 0, 1, 1, 0, 0, GB_NORTHWEST, GB_NONE, 8, 8, 0, 0));
         add(matchesTable(), getSharedConstraints(0, 1, 1, 1, 1, 1, GB_CENTER, GB_BOTH, 8, 8, 0, 0));
-    }
-
-    private void showAddDialog(JFrame parent) {
-        JDialog addDialog = new AddForecastDialog(parent, tableModel);
-        addDialog.setVisible(true);
     }
 
     private JTable matchesTable() {

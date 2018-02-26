@@ -8,10 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.forecast.utils.MyGridBagConstraints.Anchor.*;
-import static com.forecast.utils.MyGridBagConstraints.Fill.GB_HORIZONTAL;
-import static com.forecast.utils.MyGridBagConstraints.Fill.GB_NONE;
+import static com.forecast.utils.MyGridBagConstraints.Fill.*;
 import static com.forecast.utils.MyGridBagLayout.getSharedConstraints;
 import static java.lang.ClassLoader.getSystemResource;
+import static javax.swing.Box.createHorizontalStrut;
 import static javax.swing.BoxLayout.X_AXIS;
 import static javax.swing.JOptionPane.*;
 
@@ -19,11 +19,12 @@ public class AddForecastDialog extends JDialog {
     public static final int CONTENT_PADDING = 20;
     private final ForecastTableModel tableModel;
     private JComboBox<Person> personCombobox;
+    private JTextArea forecastListArea;
 
     public AddForecastDialog(JFrame owner, ForecastTableModel tableModel) {
         super(owner, "Добавить прогноз");
         this.tableModel = tableModel;
-        setMinimumSize(new Dimension(300, 400));
+        setMinimumSize(new Dimension(400, 450));
         dialogInit();
     }
 
@@ -32,9 +33,12 @@ public class AddForecastDialog extends JDialog {
         super.dialogInit();
         setLayout(new MyGridBagLayout());
 
-        add(getNameSelectionPanel(), getSharedConstraints(0, 0, 1, 1, 1, 0, GB_NORTHEAST, GB_HORIZONTAL, CONTENT_PADDING, CONTENT_PADDING, CONTENT_PADDING, CONTENT_PADDING));
+        add(getNameSelectionPanel(),
+                getSharedConstraints(0, 0, 1, 1, 1, 0, GB_NORTHEAST, GB_HORIZONTAL, CONTENT_PADDING, CONTENT_PADDING, 0, CONTENT_PADDING));
+        add(getForecastListArea(),
+                getSharedConstraints(0, 1, 1, 1, 1, 1, GB_CENTER, GB_BOTH, CONTENT_PADDING, CONTENT_PADDING, 0, CONTENT_PADDING));
         add(getOkAndCancelPanel(),
-                getSharedConstraints(0, 2, 2, 1, 1, 0, GB_SOUTH, GB_HORIZONTAL, CONTENT_PADDING, CONTENT_PADDING, CONTENT_PADDING, CONTENT_PADDING));
+                getSharedConstraints(0, 2, 1, 1, 1, 0, GB_SOUTH, GB_HORIZONTAL, CONTENT_PADDING, CONTENT_PADDING, CONTENT_PADDING, CONTENT_PADDING));
     }
 
     private JPanel getNameSelectionPanel() {
@@ -47,6 +51,8 @@ public class AddForecastDialog extends JDialog {
         addPersonButton.addActionListener(e -> addPerson(panel, comboBoxModel));
         JButton removePersonButton = new JButton(new ImageIcon(getSystemResource("icons/minus.png")));
         removePersonButton.addActionListener(e -> removePerson(comboBoxModel, removePersonButton));
+        panel.add(new JLabel("Участник:"));
+        panel.add(createHorizontalStrut(10));
         panel.add(personCombobox);
         panel.add(addPersonButton);
         panel.add(removePersonButton);
@@ -89,6 +95,19 @@ public class AddForecastDialog extends JDialog {
         buttons.add(okButton, getSharedConstraints(1, 1, 1, 2, 0.0, 0.0, GB_EAST, GB_NONE, 0, 8, 0, 0));
         buttons.add(cancelButton, getSharedConstraints(3, 1, 1, 2, 0.0, 0.0, GB_EAST, GB_NONE, 0, 8, 0, 0));
         return buttons;
+    }
+
+    private JPanel getForecastListArea() {
+        forecastListArea = new JTextArea();
+        forecastListArea.setPreferredSize(new Dimension(260, 200));
+        forecastListArea.setWrapStyleWord(true);
+        forecastListArea.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(forecastListArea);
+        JPanel panel = new JPanel(new MyGridBagLayout());
+        JLabel label = new JLabel("Прогноз:");
+        panel.add(label, getSharedConstraints(0, 0, 1, 1, 0, 0, GB_NORTH, GB_NONE, 0, 0, 0, 0));
+        panel.add(scrollPane, getSharedConstraints(0, 1, 1, 1, 1, 1, GB_CENTER, GB_BOTH, 0, 0, CONTENT_PADDING, 0));
+        return panel;
     }
 
     private void cancel() {
