@@ -10,6 +10,7 @@ import static com.forecast.utils.MyGridBagConstraints.Anchor.GB_NORTHWEST;
 import static com.forecast.utils.MyGridBagConstraints.Fill.GB_BOTH;
 import static com.forecast.utils.MyGridBagConstraints.Fill.GB_NONE;
 import static com.forecast.utils.MyGridBagLayout.getSharedConstraints;
+import static java.awt.EventQueue.invokeLater;
 
 public class ForecastPanel extends JPanel {
 
@@ -28,6 +29,7 @@ public class ForecastPanel extends JPanel {
     private JTable matchesTable() {
         JTable table = new JTable();
         table.setModel(tableModel);
+        tableModel.addTableModelListener(e -> invokeLater(table::repaint));
         return table;
     }
 }

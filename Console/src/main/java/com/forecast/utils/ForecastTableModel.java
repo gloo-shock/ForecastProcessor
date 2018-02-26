@@ -3,33 +3,16 @@ package com.forecast.utils;
 import com.forecast.entries.Forecast;
 import com.forecast.entries.Match;
 import com.forecast.entries.Person;
-import com.forecast.entries.Team;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 public class ForecastTableModel extends AbstractTableModel {
     private final Map<Person, Set<Forecast>> forecastMap = new HashMap<>();
     private final List<Match> matches = new ArrayList<>();
     private final List<Person> persons = new ArrayList<>();
-
-    public ForecastTableModel() {
-        matches.addAll(Arrays.asList(
-                new Match(new Team("Реал"), new Team("Барселона")),
-                new Match(new Team("Интер"), new Team("Милан")),
-                new Match(new Team("ЦСКА"), new Team("Спартак")),
-                new Match(new Team("ПСЖ"), new Team("Монако"))));
-
-
-        Person andrey = new Person("Андрей", "Глушок");
-        forecastMap.put(andrey,
-                matches.stream().map(match -> new Forecast(match, 1, 2)).collect(Collectors.toSet()));
-        Person sergey = new Person("Сергей", "Ерошенко");
-        forecastMap.put(sergey,
-                matches.stream().map(match -> new Forecast(match, 2, 3)).collect(Collectors.toSet()));
-        persons.addAll(Arrays.asList(andrey, sergey));
-    }
 
     @Override
     public int getRowCount() {
@@ -48,7 +31,7 @@ public class ForecastTableModel extends AbstractTableModel {
         }
         Match match = rowIndex == 0 ? null : matches.get(rowIndex - 1);
         if (columnIndex == 0) {
-            return match.getHost().getName() + "-" + match.getGuest().getName();
+            return match.getHost().getName() + " - " + match.getGuest().getName();
         }
         Person person = persons.get(columnIndex - 1);
         if (rowIndex == 0) {
@@ -63,7 +46,19 @@ public class ForecastTableModel extends AbstractTableModel {
         return forecast.getHostScore() + "-" + forecast.getGuestScore() + " (0 очков)";
     }
 
-    public void addEntry(String entry) {
-
+    public void addEntry(Person person, Set<Forecast> forecasts) {
+        if (!persons.contains(person)) {
+            persons.add(person);
+        }
+        matches.addAll(forecasts.stream()
+                .map(Forecast::getMatch)
+                .filter(match -> !matches.contains(match))
+                .collect(toSet()));
+        Set<Forecast> currentForecasts = forecastMap.computeIfAbsent(person, person1 -> new HashSet<>());
+        currentForecasts.removeIf(forecast -> forecasts.stream().map(Forecast::getMatch)
+                .anyMatch(match -> match.equals(forecast.getMatch())));
+        currentForecasts
+                .addAll(forecasts);
+        fireTableChanged(null);
     }
 }

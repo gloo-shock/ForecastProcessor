@@ -1,16 +1,20 @@
 package com.forecast.forecasts;
 
+import com.forecast.entries.Forecast;
 import com.forecast.entries.Person;
 import com.forecast.utils.ForecastTableModel;
 import com.forecast.utils.MyGridBagLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import static com.forecast.utils.MyGridBagConstraints.Anchor.*;
 import static com.forecast.utils.MyGridBagConstraints.Fill.*;
 import static com.forecast.utils.MyGridBagLayout.getSharedConstraints;
 import static java.lang.ClassLoader.getSystemResource;
+import static java.util.stream.Collectors.toSet;
 import static javax.swing.Box.createHorizontalStrut;
 import static javax.swing.BoxLayout.X_AXIS;
 import static javax.swing.JOptionPane.*;
@@ -64,11 +68,13 @@ public class AddForecastDialog extends JDialog {
 
         if (newName != null && !(newName = newName.trim()).isEmpty()) {
             int space = newName.indexOf(" ");
+            Person person;
             if (space > 0) {
-                comboBoxModel.addElement(new Person(newName.substring(0, space), newName.substring(space + 1)));
+                comboBoxModel.addElement(person = new Person(newName.substring(0, space), newName.substring(space + 1)));
             } else {
-                comboBoxModel.addElement(new Person(newName, ""));
+                comboBoxModel.addElement(person = new Person(newName, ""));
             }
+            comboBoxModel.setSelectedItem(person);
         }
     }
 
@@ -111,17 +117,34 @@ public class AddForecastDialog extends JDialog {
     }
 
     private void cancel() {
+        forecastListArea.setText("");
         setVisible(false);
     }
 
     private void ok() {
-        setVisible(false);
+        Person person = (Person) personCombobox.getSelectedItem();
+        if (person == null) {
+            showMessageDialog(this, "Выберите участника!");
+        }
+        String text = forecastListArea.getText().trim();
+        if (text.isEmpty()) {
+            showMessageDialog(this, "Заполните поле для прогноза!");
+        }
+        int answer = showConfirmDialog(this, "Добавить прогнозы для пользователя " + person + "?");
+        if (answer == YES_OPTION) {
+            String[] forecasts = text.split("\n");
+            tableModel.addEntry(person,
+                    Stream.of(forecasts).map(Forecast::parseFromString)
+                            .filter(Objects::nonNull).collect(toSet()));
+            forecastListArea.setText("");
+            setVisible(false);
+        }
     }
 
     @Override
     public void setVisible(boolean b) {
         Container parent = getParent();
-        if (parent!=null){
+        if (parent != null) {
             setLocationRelativeTo(parent);
         }
         super.setVisible(b);
