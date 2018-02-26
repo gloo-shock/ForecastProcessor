@@ -117,4 +117,13 @@ public class AddForecastDialog extends JDialog {
     private void ok() {
         setVisible(false);
     }
+
+    @Override
+    public void setVisible(boolean b) {
+        Container parent = getParent();
+        if (parent!=null){
+            setLocationRelativeTo(parent);
+        }
+        super.setVisible(b);
+    }
 }
