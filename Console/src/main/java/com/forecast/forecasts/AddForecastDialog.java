@@ -2,7 +2,6 @@ package com.forecast.forecasts;
 
 import com.forecast.entries.Forecast;
 import com.forecast.entries.Person;
-import com.forecast.utils.ForecastTableModel;
 import com.forecast.utils.MyGridBagLayout;
 
 import javax.swing.*;

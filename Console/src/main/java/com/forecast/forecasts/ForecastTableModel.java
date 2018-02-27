@@ -1,4 +1,4 @@
-package com.forecast.utils;
+package com.forecast.forecasts;
 
 import com.forecast.entries.Forecast;
 import com.forecast.entries.Match;
@@ -31,7 +31,7 @@ public class ForecastTableModel extends AbstractTableModel {
         }
         Match match = rowIndex == 0 ? null : matches.get(rowIndex - 1);
         if (columnIndex == 0) {
-            return match.getHost().getName() + " - " + match.getGuest().getName();
+            return match;
         }
         Person person = persons.get(columnIndex - 1);
         if (rowIndex == 0) {
@@ -60,5 +60,9 @@ public class ForecastTableModel extends AbstractTableModel {
         currentForecasts
                 .addAll(forecasts);
         fireTableChanged(null);
+    }
+
+    public List<Match> getMatches() {
+        return matches;
     }
 }
