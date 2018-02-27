@@ -25,16 +25,28 @@ public class ForecastPanel extends JPanel {
         add(resultTable(), getSharedConstraints(1, 1, 1, 1, 0, 1, GB_WEST, GB_BOTH, 8, 8, 0, 0));
     }
 
-    private JTable forecastTable() {
+    private JScrollPane forecastTable() {
         JTable table = new JTable();
         table.setModel(tableModel);
-        return table;
+        table.setTableHeader(null);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setMinimumSize(new Dimension(300, 500));
+        return scrollPane;
     }
 
-    private JTable resultTable() {
-        JTable table = new JTable();
+    private JScrollPane resultTable() {
+        JTable table = new JTable() {
+            @Override
+            public void createDefaultColumnsFromModel() {
+                super.createDefaultColumnsFromModel();
+                if (getColumnCount() > 0) {
+                    getColumnModel().getColumn(0).setMinWidth(200);
+                }
+            }
+        };
         table.setModel(new ResultTableModel(tableModel));
-        table.setMinimumSize(new Dimension(500, 500));
-        return table;
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setMinimumSize(new Dimension(300, 500));
+        return scrollPane;
     }
 }

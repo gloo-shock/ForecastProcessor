@@ -66,7 +66,7 @@ public class ResultTableModel extends AbstractTableModel {
             case MATCH_COLUMN:
                 return "Матч";
             case SCORE_COLUMN:
-                return "Реальный счет";
+                return "Счет";
         }
         return super.getColumnName(column);
     }
