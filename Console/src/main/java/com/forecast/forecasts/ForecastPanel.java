@@ -3,6 +3,7 @@ package com.forecast.forecasts;
 import com.forecast.utils.MyGridBagLayout;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 
 import static com.forecast.utils.MyGridBagConstraints.Anchor.*;
@@ -47,6 +48,8 @@ public class ForecastPanel extends JPanel {
         table.setModel(new ResultTableModel(tableModel));
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setMinimumSize(new Dimension(300, 500));
+        JTableHeader header = table.getTableHeader();
+        header.setPreferredSize(new Dimension(header.getPreferredSize().width, table.getRowHeight()));
         return scrollPane;
     }
 }
