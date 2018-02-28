@@ -10,6 +10,10 @@ data class Forecast(val match: Match,
                     val hostScore: Int,
                     val guestScore: Int) {
 
+    fun getDiff(): Int {
+        return hostScore - guestScore;
+    }
+
     companion object {
         @JvmStatic
         fun parseFromString(forecastString: String): Forecast? {
