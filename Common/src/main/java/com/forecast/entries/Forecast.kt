@@ -35,8 +35,14 @@ data class Forecast(val match: Match,
 
         @JvmStatic
         private fun extractAllParts(part: String, split: Boolean): Stream<String> {
-            return if (split) part.trim().split(" ").stream()
-            else Stream.of(part.trim())
+            val trimmed = part.trim()
+            if (split) {
+                val space = trimmed.lastIndexOf(" ")
+                if (space > 0) {
+                    return Stream.of(trimmed.substring(0, space), trimmed.substring(space + 1))
+                }
+            }
+            return Stream.of(trimmed)
         }
     }
 }

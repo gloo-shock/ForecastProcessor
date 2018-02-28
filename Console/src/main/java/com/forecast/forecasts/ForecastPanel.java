@@ -28,7 +28,15 @@ public class ForecastPanel extends JPanel {
 
     private JPanel forecastTable() {
         JPanel panel = new JPanel(new MyGridBagLayout());
-        JTable table = new JTable();
+        JTable table = new JTable() {
+            @Override
+            public void createDefaultColumnsFromModel() {
+                super.createDefaultColumnsFromModel();
+                if (getColumnCount() > 0) {
+                    getColumnModel().getColumn(0).setMinWidth(200);
+                }
+            }
+        };
         table.setModel(tableModel);
         table.setTableHeader(null);
         JScrollPane scrollPane = new JScrollPane(table);

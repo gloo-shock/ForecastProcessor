@@ -16,7 +16,7 @@ public class ForecastTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return forecastMap.values().stream().map(Set::size).max(Integer::compareTo).orElse(0) + 1;
+        return matches.size() + 1;
     }
 
     @Override
