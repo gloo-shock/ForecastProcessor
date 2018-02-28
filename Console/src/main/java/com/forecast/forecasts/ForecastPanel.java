@@ -26,16 +26,21 @@ public class ForecastPanel extends JPanel {
         add(resultTable(), getSharedConstraints(1, 1, 1, 1, 0, 1, GB_WEST, GB_BOTH, 8, 8, 0, 0));
     }
 
-    private JScrollPane forecastTable() {
+    private JPanel forecastTable() {
+        JPanel panel = new JPanel(new MyGridBagLayout());
         JTable table = new JTable();
         table.setModel(tableModel);
         table.setTableHeader(null);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setMinimumSize(new Dimension(300, 500));
-        return scrollPane;
+        panel.add(new JLabel("Прогнозы участников"),
+                getSharedConstraints(0, 0, 1, 1, 0, 0, GB_CENTER, GB_NONE, 0, 0, 0, 0));
+        panel.add(scrollPane,
+                getSharedConstraints(0, 1, 1, 1, 1, 1, GB_CENTER, GB_BOTH, 8, 0, 0, 0));
+        return panel;
     }
 
-    private JScrollPane resultTable() {
+    private JPanel resultTable() {
         JTable table = new JTable() {
             @Override
             public void createDefaultColumnsFromModel() {
@@ -50,6 +55,11 @@ public class ForecastPanel extends JPanel {
         scrollPane.setMinimumSize(new Dimension(300, 500));
         JTableHeader header = table.getTableHeader();
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, table.getRowHeight()));
-        return scrollPane;
+        JPanel panel = new JPanel(new MyGridBagLayout());
+        panel.add(new JLabel("Результаты матчей"),
+                getSharedConstraints(0, 0, 1, 1, 0, 0, GB_CENTER, GB_NONE, 0, 0, 0, 0));
+        panel.add(scrollPane,
+                getSharedConstraints(0, 1, 1, 1, 1, 1, GB_CENTER, GB_BOTH, 8, 0, 0, 0));
+        return panel;
     }
 }
