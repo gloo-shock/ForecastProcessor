@@ -1,6 +1,7 @@
 package com.forecast.forecasts;
 
 import com.forecast.entries.Forecast;
+import com.forecast.entries.ForecastResult;
 import com.forecast.entries.Match;
 import com.forecast.entries.Person;
 
@@ -10,7 +11,8 @@ import java.util.*;
 import static java.util.stream.Collectors.toSet;
 
 public class ForecastTableModel extends AbstractTableModel {
-    private final Map<Person, Set<Forecast>> forecastMap = new HashMap<>();
+    private final Map<Person, Set<ForecastResult>> data = new HashMap<>();
+    private final Map<Match, Forecast> results = new HashMap<>();
     private final List<Match> matches = new ArrayList<>();
     private final List<Person> persons = new ArrayList<>();
 
@@ -21,7 +23,7 @@ public class ForecastTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return forecastMap.size() + 1;
+        return data.size() + 1;
     }
 
     @Override
@@ -37,26 +39,28 @@ public class ForecastTableModel extends AbstractTableModel {
         if (rowIndex == 0) {
             return person.getFirstName();
         }
-        Forecast forecast = forecastMap.get(person).stream()
+        ForecastResult result = data.get(person).stream()
                 .filter(forecast1 -> forecast1.getMatch().equals(match))
                 .findAny().orElse(null);
-        if (forecast == null) {
+        if (result == null) {
             return "";
         }
-        return forecast.getHostScore() + "-" + forecast.getGuestScore() + " (0 очков)";
+        return result.getForecast().getHostScore() + "-" + result.getForecast().getGuestScore() + " (" + result.computeScore() + " очков)";
     }
 
-    public void addEntry(Person person, Set<Forecast> forecasts) {
+    public void addEntry(Person person, Set<ForecastResult> forecasts) {
         if (!persons.contains(person)) {
             persons.add(person);
         }
         matches.addAll(forecasts.stream()
-                .map(Forecast::getMatch)
+                .map(ForecastResult::getMatch)
                 .filter(match -> !matches.contains(match))
                 .collect(toSet()));
-        Set<Forecast> currentForecasts = forecastMap.computeIfAbsent(person, person1 -> new HashSet<>());
-        currentForecasts.removeIf(forecast -> forecasts.stream().map(Forecast::getMatch)
+        Set<ForecastResult> currentForecasts = data.computeIfAbsent(person, person1 -> new HashSet<>());
+        currentForecasts.removeIf(forecast -> forecasts.stream().map(ForecastResult::getMatch)
                 .anyMatch(match -> match.equals(forecast.getMatch())));
+        forecasts.forEach(forecastResult ->
+                forecastResult.setResultAndUpdateScore(results.get(forecastResult.getMatch())));
         currentForecasts
                 .addAll(forecasts);
         fireTableChanged(null);
@@ -64,5 +68,15 @@ public class ForecastTableModel extends AbstractTableModel {
 
     public List<Match> getMatches() {
         return matches;
+    }
+
+    public void fillScore(Match match, Forecast result) {
+        results.put(match, result);
+        data.values().stream()
+                .flatMap(Collection::stream)
+                .filter(forecastResult -> forecastResult.getMatch().equals(match))
+                .forEach(forecastResult -> forecastResult.setResultAndUpdateScore(result));
+        int row = matches.indexOf(match) + 1;
+        fireTableRowsUpdated(row, row);
     }
 }

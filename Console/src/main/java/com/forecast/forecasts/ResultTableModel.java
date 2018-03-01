@@ -1,6 +1,7 @@
 package com.forecast.forecasts;
 
 import com.forecast.entries.Forecast;
+import com.forecast.entries.ForecastResult;
 import com.forecast.entries.Match;
 
 import javax.swing.table.AbstractTableModel;
@@ -51,11 +52,12 @@ public class ResultTableModel extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (columnIndex > 0 && aValue instanceof String) {
             Match match = forecastTableModel.getMatches().get(rowIndex);
-            Forecast forecast = Forecast.parseFromString(match.toString() + " " + aValue);
-            if (forecast == null) {
+            ForecastResult forecastResult = ForecastResult.parseFromString(match.toString() + " " + aValue);
+            if (forecastResult == null) {
 //                JOptionPane.showMessageDialog();
             } else {
-                result.put(match, forecast);
+                result.put(match, forecastResult.getForecast());
+                forecastTableModel.fillScore(match, forecastResult.getForecast());
             }
         }
     }

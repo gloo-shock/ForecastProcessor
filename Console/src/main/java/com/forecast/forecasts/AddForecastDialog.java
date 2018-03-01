@@ -1,6 +1,6 @@
 package com.forecast.forecasts;
 
-import com.forecast.entries.Forecast;
+import com.forecast.entries.ForecastResult;
 import com.forecast.entries.Person;
 import com.forecast.utils.MyGridBagLayout;
 
@@ -133,7 +133,7 @@ public class AddForecastDialog extends JDialog {
         if (answer == YES_OPTION) {
             String[] forecasts = text.split("\n");
             tableModel.addEntry(person,
-                    Stream.of(forecasts).map(Forecast::parseFromString)
+                    Stream.of(forecasts).map(ForecastResult::parseFromString)
                             .filter(Objects::nonNull).collect(toSet()));
             forecastListArea.setText("");
             setVisible(false);
