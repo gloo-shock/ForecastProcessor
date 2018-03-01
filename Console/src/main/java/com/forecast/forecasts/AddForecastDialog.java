@@ -69,9 +69,14 @@ public class AddForecastDialog extends JDialog {
             int space = newName.indexOf(" ");
             Person person;
             if (space > 0) {
-                comboBoxModel.addElement(person = new Person(newName.substring(0, space), newName.substring(space + 1)));
+                person = new Person(newName.substring(0, space), newName.substring(space + 1));
             } else {
-                comboBoxModel.addElement(person = new Person(newName, ""));
+                person = new Person(newName, "");
+            }
+            if (comboBoxModel.getIndexOf(person) < 0) {
+                comboBoxModel.addElement(person);
+            } else {
+                JOptionPane.showMessageDialog(panel, "Такой участник уже существует");
             }
             comboBoxModel.setSelectedItem(person);
         }
