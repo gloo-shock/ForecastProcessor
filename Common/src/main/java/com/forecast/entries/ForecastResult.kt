@@ -16,7 +16,7 @@ class ForecastResult {
         this.score = computeScore()
     }
 
-    private fun computeScore(): Int {
+    public fun computeScore(): Int {
         if (result == null) {
             return NOTHING
         }

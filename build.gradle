@@ -12,6 +12,5 @@ repositories {
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.11'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.0.3'
 }
 
