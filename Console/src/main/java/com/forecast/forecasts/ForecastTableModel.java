@@ -45,7 +45,7 @@ public class ForecastTableModel extends AbstractTableModel {
         if (result == null) {
             return "";
         }
-        return result.getForecast().getHostScore() + "-" + result.getForecast().getGuestScore() + " (" + result.computeScore() + " очков)";
+        return result.getForecast().getHostScore() + "-" + result.getForecast().getGuestScore() + " (" + result.getScoreString() + ")";
     }
 
     public void addEntry(Person person, Set<ForecastResult> forecasts) {
