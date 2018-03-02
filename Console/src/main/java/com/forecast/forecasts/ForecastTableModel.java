@@ -18,7 +18,7 @@ public class ForecastTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return matches.size() + 1;
+        return matches.size() + 2;
     }
 
     @Override
@@ -31,13 +31,16 @@ public class ForecastTableModel extends AbstractTableModel {
         if (rowIndex == 0 && columnIndex == 0) {
             return "";
         }
-        Match match = rowIndex == 0 ? null : matches.get(rowIndex - 1);
+        Match match = (rowIndex == 0 || rowIndex > matches.size()) ? null : matches.get(rowIndex - 1);
         if (columnIndex == 0) {
-            return match;
+            return rowIndex == getRowCount() - 1 ? "Сумма" : match;
         }
         Person person = persons.get(columnIndex - 1);
         if (rowIndex == 0) {
             return person.getFirstName();
+        }
+        if (rowIndex == getRowCount() - 1) {
+            return ForecastResult.getScoreString(data.get(person).stream().mapToInt(ForecastResult::getScore).sum());
         }
         ForecastResult result = data.get(person).stream()
                 .filter(forecast1 -> forecast1.getMatch().equals(match))
@@ -77,6 +80,6 @@ public class ForecastTableModel extends AbstractTableModel {
                 .filter(forecastResult -> forecastResult.getMatch().equals(match))
                 .forEach(forecastResult -> forecastResult.setResultAndUpdateScore(result));
         int row = matches.indexOf(match) + 1;
-        fireTableRowsUpdated(row, row);
+        fireTableRowsUpdated(row, getRowCount() - 1);
     }
 }

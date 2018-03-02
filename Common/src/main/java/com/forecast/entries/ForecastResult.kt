@@ -18,14 +18,7 @@ class ForecastResult(val match: Match, val forecast: Forecast, var result: Forec
     }
 
     fun getScoreString(): String {
-        val rest = score % 10
-        if (rest == 1) {
-            return score.toString() + " очко"
-        }
-        if (rest > 1 && rest < 5) {
-            return score.toString() + " очка"
-        }
-        return score.toString() + " очков"
+        return getScoreString(score)
     }
 
     @Synchronized
@@ -87,6 +80,18 @@ class ForecastResult(val match: Match, val forecast: Forecast, var result: Forec
                 }
             }
             return Stream.of(trimmed)
+        }
+
+        @JvmStatic
+        fun getScoreString(score: Int): String {
+            val rest = score % 10
+            if (rest == 1) {
+                return score.toString() + " очко"
+            }
+            if (rest > 1 && rest < 5) {
+                return score.toString() + " очка"
+            }
+            return score.toString() + " очков"
         }
     }
 }
