@@ -4,10 +4,13 @@ import com.forecast.forecasts.ForecastPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.UnsupportedEncodingException;
+
+import static com.forecast.resources.ResourceUtils.getString;
 
 public class MainFrame extends JFrame {
 
-    public MainFrame() throws HeadlessException {
+    public MainFrame() throws HeadlessException, UnsupportedEncodingException {
         super("Forecast Processor");
         setPreferredSize(new Dimension(1000, 500));
         setMinimumSize(new Dimension(1000, 500));
@@ -16,8 +19,7 @@ public class MainFrame extends JFrame {
 
     private void initTabbedPane() {
         JTabbedPane tabbedPane = new JTabbedPane();
-//        tabbedPane.addTab(ResourceBundle.getBundle("string", new Locale("ru"), this.getClass().getClassLoader()).getString("forecasts"), new ForecastPanel(this));
-        tabbedPane.addTab("Прогнозы", new ForecastPanel(this));
+        tabbedPane.addTab(getString("forecasts"), new ForecastPanel(this));
         add(tabbedPane);
     }
 }

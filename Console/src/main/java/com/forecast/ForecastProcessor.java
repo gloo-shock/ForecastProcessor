@@ -7,9 +7,12 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 public class ForecastProcessor {
 
     public static void main(String[] args) {
-        JFrame frame = new MainFrame();
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
+        try {
+            JFrame frame = new MainFrame();
+            frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            frame.setVisible(true);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

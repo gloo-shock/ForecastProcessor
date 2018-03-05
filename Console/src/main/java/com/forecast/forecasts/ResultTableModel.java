@@ -8,6 +8,8 @@ import javax.swing.table.AbstractTableModel;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.forecast.resources.ResourceUtils.getString;
+
 public class ResultTableModel extends AbstractTableModel {
     public static final int MATCH_COLUMN = 0;
     public static final int SCORE_COLUMN = 1;
@@ -66,9 +68,9 @@ public class ResultTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         switch (column) {
             case MATCH_COLUMN:
-                return "Матч";
+                return getString("match");
             case SCORE_COLUMN:
-                return "Счет";
+                return getString("score");
         }
         return super.getColumnName(column);
     }

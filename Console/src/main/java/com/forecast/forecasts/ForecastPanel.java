@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
+import static com.forecast.resources.ResourceUtils.getString;
 import static com.forecast.utils.MyGridBagConstraints.Anchor.*;
 import static com.forecast.utils.MyGridBagConstraints.Fill.GB_BOTH;
 import static com.forecast.utils.MyGridBagConstraints.Fill.GB_NONE;
@@ -18,7 +19,7 @@ public class ForecastPanel extends JPanel {
 
     public ForecastPanel(JFrame parent) {
         super(new MyGridBagLayout());
-        JButton addButton = new JButton("Добавить прогноз");
+        JButton addButton = new JButton(getString("addForecast"));
         addDialog = new AddForecastDialog(parent, tableModel);
         addButton.addActionListener(e -> addDialog.setVisible(true));
         add(addButton, getSharedConstraints(0, 0, 1, 1, 0, 0, GB_NORTHWEST, GB_NONE, 8, 8, 0, 0));
@@ -41,7 +42,7 @@ public class ForecastPanel extends JPanel {
         table.setTableHeader(null);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setMinimumSize(new Dimension(300, 500));
-        panel.add(new JLabel("Прогнозы участников"),
+        panel.add(new JLabel(getString("forecastTable.name")),
                 getSharedConstraints(0, 0, 1, 1, 0, 0, GB_CENTER, GB_NONE, 0, 0, 0, 0));
         panel.add(scrollPane,
                 getSharedConstraints(0, 1, 1, 1, 1, 1, GB_CENTER, GB_BOTH, 8, 0, 0, 0));
@@ -64,7 +65,7 @@ public class ForecastPanel extends JPanel {
         JTableHeader header = table.getTableHeader();
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, table.getRowHeight()));
         JPanel panel = new JPanel(new MyGridBagLayout());
-        panel.add(new JLabel("Результаты матчей"),
+        panel.add(new JLabel(getString("resultsTable.name")),
                 getSharedConstraints(0, 0, 1, 1, 0, 0, GB_CENTER, GB_NONE, 0, 0, 0, 0));
         panel.add(scrollPane,
                 getSharedConstraints(0, 1, 1, 1, 1, 1, GB_CENTER, GB_BOTH, 8, 0, 0, 0));

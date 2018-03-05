@@ -9,6 +9,7 @@ import java.awt.*;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static com.forecast.resources.ResourceUtils.getString;
 import static com.forecast.utils.MyGridBagConstraints.Anchor.*;
 import static com.forecast.utils.MyGridBagConstraints.Fill.*;
 import static com.forecast.utils.MyGridBagLayout.getSharedConstraints;
@@ -25,7 +26,7 @@ public class AddForecastDialog extends JDialog {
     private JTextArea forecastListArea;
 
     public AddForecastDialog(JFrame owner, ForecastTableModel tableModel) {
-        super(owner, "Добавить прогноз");
+        super(owner, getString("addForecast"));
         this.tableModel = tableModel;
         setMinimumSize(new Dimension(400, 450));
         dialogInit();
@@ -54,7 +55,7 @@ public class AddForecastDialog extends JDialog {
         addPersonButton.addActionListener(e -> addPerson(panel, comboBoxModel));
         JButton removePersonButton = new JButton(new ImageIcon(getSystemResource("icons/minus.png")));
         removePersonButton.addActionListener(e -> removePerson(comboBoxModel, removePersonButton));
-        panel.add(new JLabel("Участник:"));
+        panel.add(new JLabel(getString("addDialog.player") + ":"));
         panel.add(createHorizontalStrut(10));
         panel.add(personCombobox);
         panel.add(addPersonButton);
@@ -63,7 +64,7 @@ public class AddForecastDialog extends JDialog {
     }
 
     private void addPerson(JPanel panel, DefaultComboBoxModel<Person> comboBoxModel) {
-        String newName = showInputDialog(panel, "Введите имя и фамилию", "Имя Фамилия");
+        String newName = showInputDialog(panel, getString("addDialog.enterName"), "Name Lastname");
 
         if (newName != null && !(newName = newName.trim()).isEmpty()) {
             int space = newName.indexOf(" ");
@@ -76,7 +77,7 @@ public class AddForecastDialog extends JDialog {
             if (comboBoxModel.getIndexOf(person) < 0) {
                 comboBoxModel.addElement(person);
             } else {
-                JOptionPane.showMessageDialog(panel, "Такой участник уже существует");
+                JOptionPane.showMessageDialog(panel, getString("addDialog.exists"));
             }
             comboBoxModel.setSelectedItem(person);
         }
@@ -86,8 +87,8 @@ public class AddForecastDialog extends JDialog {
         Person selected = (Person) comboBoxModel.getSelectedItem();
         if (selected != null) {
             int result = showConfirmDialog(parent,
-                    "Вы уверены, что хотите удалить участника " + selected + "?",
-                    "Удалить участника",
+                    getString("addDialog.removePerson.sure", selected.toString()),
+                    getString("addDialog.removePerson"),
                     YES_NO_OPTION);
             if (result == YES_OPTION) {
                 comboBoxModel.removeElement(selected);
@@ -100,7 +101,7 @@ public class AddForecastDialog extends JDialog {
         buttons.setOpaque(false);
         JButton okButton = new JButton("OK");
         okButton.addActionListener(e -> ok());
-        JButton cancelButton = new JButton("Отмена");
+        JButton cancelButton = new JButton(getString("cancel"));
         cancelButton.addActionListener(e -> cancel());
         buttons.add(okButton, getSharedConstraints(1, 1, 1, 2, 0.0, 0.0, GB_EAST, GB_NONE, 0, 8, 0, 0));
         buttons.add(cancelButton, getSharedConstraints(3, 1, 1, 2, 0.0, 0.0, GB_EAST, GB_NONE, 0, 8, 0, 0));
@@ -114,7 +115,7 @@ public class AddForecastDialog extends JDialog {
         forecastListArea.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(forecastListArea);
         JPanel panel = new JPanel(new MyGridBagLayout());
-        JLabel label = new JLabel("Прогноз:");
+        JLabel label = new JLabel(getString("forecast") + ":");
         panel.add(label, getSharedConstraints(0, 0, 1, 1, 0, 0, GB_NORTH, GB_NONE, 0, 0, 0, 0));
         panel.add(scrollPane, getSharedConstraints(0, 1, 1, 1, 1, 1, GB_CENTER, GB_BOTH, 0, 0, CONTENT_PADDING, 0));
         return panel;
@@ -128,13 +129,15 @@ public class AddForecastDialog extends JDialog {
     private void ok() {
         Person person = (Person) personCombobox.getSelectedItem();
         if (person == null) {
-            showMessageDialog(this, "Выберите участника!");
+            showMessageDialog(this, getString("addDialog.selectPlayer"));
+            return;
         }
         String text = forecastListArea.getText().trim();
         if (text.isEmpty()) {
-            showMessageDialog(this, "Заполните поле для прогноза!");
+            showMessageDialog(this, getString("addDialog.fillForecast"));
+            return;
         }
-        int answer = showConfirmDialog(this, "Добавить прогнозы для пользователя " + person + "?");
+        int answer = showConfirmDialog(this, getString("addDialog.addForecastsQuestion", person.toString()));
         if (answer == YES_OPTION) {
             String[] forecasts = text.split("\n");
             tableModel.addEntry(person,

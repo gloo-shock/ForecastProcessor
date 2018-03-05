@@ -8,6 +8,7 @@ import com.forecast.entries.Person;
 import javax.swing.table.AbstractTableModel;
 import java.util.*;
 
+import static com.forecast.resources.ResourceUtils.getString;
 import static java.util.stream.Collectors.toSet;
 
 public class ForecastTableModel extends AbstractTableModel {
@@ -33,14 +34,14 @@ public class ForecastTableModel extends AbstractTableModel {
         }
         Match match = (rowIndex == 0 || rowIndex > matches.size()) ? null : matches.get(rowIndex - 1);
         if (columnIndex == 0) {
-            return rowIndex == getRowCount() - 1 ? "Сумма" : match;
+            return rowIndex == getRowCount() - 1 ? getString("sum") : match;
         }
         Person person = persons.get(columnIndex - 1);
         if (rowIndex == 0) {
             return person.getFirstName();
         }
         if (rowIndex == getRowCount() - 1) {
-            return ForecastResult.getScoreString(data.get(person).stream().mapToInt(ForecastResult::getScore).sum());
+            return data.get(person).stream().mapToInt(ForecastResult::getScore).sum() + " " + getString("pts");
         }
         ForecastResult result = data.get(person).stream()
                 .filter(forecast1 -> forecast1.getMatch().equals(match))
@@ -48,7 +49,7 @@ public class ForecastTableModel extends AbstractTableModel {
         if (result == null) {
             return "";
         }
-        return result.getForecast().getHostScore() + "-" + result.getForecast().getGuestScore() + " (" + result.getScoreString() + ")";
+        return result.getForecast().getHostScore() + "-" + result.getForecast().getGuestScore() + " (" + result.getScore() + " " + getString("pts") + ")";
     }
 
     public void addEntry(Person person, Set<ForecastResult> forecasts) {
