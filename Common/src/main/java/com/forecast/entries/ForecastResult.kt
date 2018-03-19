@@ -1,6 +1,7 @@
 package com.forecast.entries
 
 import java.lang.NumberFormatException
+import java.util.Arrays.asList
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 import java.util.stream.Stream
@@ -38,20 +39,49 @@ class ForecastResult(val match: Match, val forecast: Forecast, var result: Forec
         updateScore()
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ForecastResult
+
+        if (match != other.match) return false
+        if (forecast != other.forecast) return false
+        if (result != other.result) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result1 = match.hashCode()
+        result1 = 31 * result1 + forecast.hashCode()
+        result1 = 31 * result1 + (result?.hashCode() ?: 0)
+        return result1
+    }
+
+    override fun toString(): String {
+        return "ForecastResult(match=$match, forecast=$forecast, result=$result, score=$score)"
+    }
+
+
     init {
         updateScore();
     }
+
+
 
     companion object {
         @JvmStatic
         fun parseFromString(forecastString: String): ForecastResult? {
             var modifiedString = forecastString.replace(":", "-");
             modifiedString = modifiedString.replace(Pattern.compile(" *- *").toRegex(), "-")
-            var parts = modifiedString.split("-")
-            if (parts.size < 3) return null;
-
-            parts = parts.stream().flatMap { extractAllParts(it, parts.indexOf(it) == 1) }
-                    .collect(Collectors.toList())
+            var parts = modifiedString.split("-").stream().map { it -> it.trim() }.collect(Collectors.toList())
+            if (parts.size == 2) {
+                parts = extractAllPartsMiddleScore(parts)
+            } else {
+                parts = parts.stream().flatMap { extractAllParts(it, parts.indexOf(it) == 1) }
+                        .collect(Collectors.toList())
+            }
             if (parts.size < 4) return null;
             try {
                 return ForecastResult(Match(
@@ -66,6 +96,21 @@ class ForecastResult(val match: Match, val forecast: Forecast, var result: Forec
             }
         }
 
+        private fun extractAllPartsMiddleScore(parts: List<String>): List<String> {
+            if (parts.size != 2) {
+                throw IllegalArgumentException("The score must be in the middle")
+            }
+            val firstTeamSpace = parts[0].lastIndexOf(" ")
+            val secondTeamSpace = parts[1].indexOf(" ")
+            if (firstTeamSpace < 0 || secondTeamSpace < 0) {
+                throw IllegalArgumentException("The score must be in the middle")
+            }
+            return asList(parts[0].substring(0, firstTeamSpace),
+                    parts[1].substring(secondTeamSpace + 1),
+                    parts[0].substring(firstTeamSpace + 1),
+                    parts[1].substring(0, secondTeamSpace))
+        }
+
         @JvmStatic
         private fun extractAllParts(part: String, split: Boolean): Stream<String> {
             val trimmed = part.trim()
@@ -77,5 +122,6 @@ class ForecastResult(val match: Match, val forecast: Forecast, var result: Forec
             }
             return Stream.of(trimmed)
         }
+
     }
 }
