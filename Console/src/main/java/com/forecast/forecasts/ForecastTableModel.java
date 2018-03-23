@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.*;
 
 import static com.forecast.resources.ResourceUtils.getString;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
 
 public class ForecastTableModel extends AbstractTableModel {
     private final Map<Person, Set<ForecastResult>> data = new HashMap<>();
@@ -52,14 +52,14 @@ public class ForecastTableModel extends AbstractTableModel {
         return result.getForecast().getHostScore() + "-" + result.getForecast().getGuestScore() + " (" + result.getScore() + " " + getString("pts") + ")";
     }
 
-    public void addEntry(Person person, Set<ForecastResult> forecasts) {
+    public void addEntry(Person person, List<ForecastResult> forecasts) {
         if (!persons.contains(person)) {
             persons.add(person);
         }
         matches.addAll(forecasts.stream()
                 .map(ForecastResult::getMatch)
                 .filter(match -> !matches.contains(match))
-                .collect(toSet()));
+                .collect(toList()));
         Set<ForecastResult> currentForecasts = data.computeIfAbsent(person, person1 -> new HashSet<>());
         currentForecasts.removeIf(forecast -> forecasts.stream().map(ForecastResult::getMatch)
                 .anyMatch(match -> match.equals(forecast.getMatch())));

@@ -14,7 +14,7 @@ import static com.forecast.utils.MyGridBagConstraints.Anchor.*;
 import static com.forecast.utils.MyGridBagConstraints.Fill.*;
 import static com.forecast.utils.MyGridBagLayout.getSharedConstraints;
 import static java.lang.ClassLoader.getSystemResource;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
 import static javax.swing.Box.createHorizontalStrut;
 import static javax.swing.BoxLayout.X_AXIS;
 import static javax.swing.JOptionPane.*;
@@ -142,7 +142,7 @@ public class AddForecastDialog extends JDialog {
             String[] forecasts = text.split("\n");
             tableModel.addEntry(person,
                     Stream.of(forecasts).map(ForecastResult::parseFromString)
-                            .filter(Objects::nonNull).collect(toSet()));
+                            .filter(Objects::nonNull).collect(toList()));
             forecastListArea.setText("");
             setVisible(false);
         }
