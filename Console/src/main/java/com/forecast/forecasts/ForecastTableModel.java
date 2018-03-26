@@ -5,30 +5,22 @@ import com.forecast.entries.ForecastResult;
 import com.forecast.entries.Match;
 import com.forecast.entries.Person;
 
-import javax.swing.table.AbstractTableModel;
 import java.util.*;
 
 import static com.forecast.resources.ResourceUtils.getString;
 import static java.util.stream.Collectors.toList;
 
-public class ForecastTableModel extends AbstractTableModel {
+public class ForecastTableModel {
     private final Map<Person, Set<ForecastResult>> data = new HashMap<>();
     private final Map<Match, Forecast> results = new HashMap<>();
     private final List<Match> matches = new ArrayList<>();
-    private final List<Person> persons = new ArrayList<>();
+    private final List<Runnable> listeners = new ArrayList<>();
 
-    @Override
     public int getRowCount() {
         return matches.size() + 2;
     }
 
-    @Override
-    public int getColumnCount() {
-        return data.size() + 1;
-    }
-
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
+    Object getValueAt(int rowIndex, int columnIndex, List<Person> persons) {
         if (rowIndex == 0 && columnIndex == 0) {
             return "";
         }
@@ -52,10 +44,7 @@ public class ForecastTableModel extends AbstractTableModel {
         return result.getForecast().getHostScore() + "-" + result.getForecast().getGuestScore() + " (" + result.getScore() + " " + getString("pts") + ")";
     }
 
-    public void addEntry(Person person, List<ForecastResult> forecasts) {
-        if (!persons.contains(person)) {
-            persons.add(person);
-        }
+    void addEntry(Person person, List<ForecastResult> forecasts) {
         matches.addAll(forecasts.stream()
                 .map(ForecastResult::getMatch)
                 .filter(match -> !matches.contains(match))
@@ -67,7 +56,7 @@ public class ForecastTableModel extends AbstractTableModel {
                 forecastResult.setResultAndUpdateScore(results.get(forecastResult.getMatch())));
         currentForecasts
                 .addAll(forecasts);
-        fireTableChanged(null);
+        fireModelChanged();
     }
 
     public List<Match> getMatches() {
@@ -80,7 +69,14 @@ public class ForecastTableModel extends AbstractTableModel {
                 .flatMap(Collection::stream)
                 .filter(forecastResult -> forecastResult.getMatch().equals(match))
                 .forEach(forecastResult -> forecastResult.setResultAndUpdateScore(result));
-        int row = matches.indexOf(match) + 1;
-        fireTableRowsUpdated(row, getRowCount() - 1);
+        fireModelChanged();
+    }
+
+    public void addTableModelListener(Runnable runnable) {
+        listeners.add(runnable);
+    }
+
+    private void fireModelChanged() {
+        listeners.forEach(Runnable::run);
     }
 }

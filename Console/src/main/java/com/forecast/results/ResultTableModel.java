@@ -1,8 +1,9 @@
-package com.forecast.forecasts;
+package com.forecast.results;
 
 import com.forecast.entries.Forecast;
 import com.forecast.entries.ForecastResult;
 import com.forecast.entries.Match;
+import com.forecast.forecasts.ForecastTableModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class ResultTableModel extends AbstractTableModel {
 
     public ResultTableModel(ForecastTableModel forecastTableModel) {
         this.forecastTableModel = forecastTableModel;
-        forecastTableModel.addTableModelListener(e -> fireTableChanged(null));
+        forecastTableModel.addTableModelListener(() -> fireTableChanged(null));
     }
 
     @Override

@@ -20,12 +20,12 @@ import static javax.swing.BoxLayout.X_AXIS;
 import static javax.swing.JOptionPane.*;
 
 public class AddForecastDialog extends JDialog {
-    public static final int CONTENT_PADDING = 20;
-    private final ForecastTableModel tableModel;
+    private static final int CONTENT_PADDING = 20;
+    private final ForecastTableModelWrapper tableModel;
     private JComboBox<Person> personCombobox;
     private JTextArea forecastListArea;
 
-    public AddForecastDialog(JFrame owner, ForecastTableModel tableModel) {
+    public AddForecastDialog(JFrame owner, ForecastTableModelWrapper tableModel) {
         super(owner, getString("addForecast"));
         this.tableModel = tableModel;
         setMinimumSize(new Dimension(400, 450));

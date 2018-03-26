@@ -12,8 +12,8 @@ public class MainFrame extends JFrame {
 
     public MainFrame() throws HeadlessException, UnsupportedEncodingException {
         super("Forecast Processor");
-        setPreferredSize(new Dimension(1000, 500));
-        setMinimumSize(new Dimension(1000, 500));
+        setPreferredSize(new Dimension(1000, 700));
+        setMinimumSize(new Dimension(1000, 700));
         initTabbedPane();
     }
 
