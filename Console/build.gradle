@@ -15,11 +15,13 @@ repositories {
 dependencies {
     compile project(':Common')
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
     // https://mvnrepository.com/artifact/de.qaware.majx/majx
     compile group: 'de.qaware.majx', name: 'majx', version: '0.9.1'
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.2.21'
-}
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.25.1'
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.25.1'}
 
 buildscript {
     ext.kotlin_version = '1.2.21'
