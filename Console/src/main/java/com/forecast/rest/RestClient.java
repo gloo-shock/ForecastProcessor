@@ -1,5 +1,7 @@
 package com.forecast.rest;
 
+import com.forecast.entries.Team;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
@@ -15,6 +17,23 @@ public class RestClient {
                 .target(REST_URI)
                 .path("greeting")
                 .request(MediaType.TEXT_PLAIN_TYPE)
+                .get(String.class);
+    }
+
+    public void addTeam(Team team) {
+        client
+                .target(REST_URI)
+                .path("add")
+                .queryParam("name", team.getName())
+                .request(MediaType.TEXT_PLAIN_TYPE)
+                .get(String.class);
+    }
+
+    public String findAllTeams() {
+        return client
+                .target(REST_URI)
+                .path("all")
+                .request(MediaType.APPLICATION_JSON)
                 .get(String.class);
     }
 }
