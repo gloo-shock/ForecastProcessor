@@ -11,6 +11,8 @@ const val RIGHT_RESULT = 2
 const val RIGHT_DIFF = 3
 const val RIGHT_SCORE = 4
 
+const val BIG_DASH = 8212.toChar()
+
 class ForecastResult(val match: Match, val forecast: Forecast, var result: Forecast?) {
     var score = 0
 
@@ -69,11 +71,10 @@ class ForecastResult(val match: Match, val forecast: Forecast, var result: Forec
     }
 
 
-
     companion object {
         @JvmStatic
         fun parseFromString(forecastString: String): ForecastResult? {
-            var modifiedString = forecastString.replace(":", "-");
+            var modifiedString = forecastString.replace(":", "-").replace(BIG_DASH, '-')
             modifiedString = modifiedString.replace(Pattern.compile(" *- *").toRegex(), "-")
             var parts = modifiedString.split("-").stream().map { it -> it.trim() }.collect(Collectors.toList())
             if (parts.size == 2) {
