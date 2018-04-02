@@ -11,9 +11,9 @@ import static com.forecast.resources.ResourceUtils.getString;
 import static java.util.stream.Collectors.toList;
 
 public class ForecastTableModel {
-    private final Map<Person, Set<ForecastResult>> data = new HashMap<>();
+    private final Map<Person, List<ForecastResult>> data = new HashMap<>();
     private final Map<Match, Forecast> results = new HashMap<>();
-    private final List<Match> matches = new ArrayList<>();
+    private List<Match> matches = new ArrayList<>();
     private final List<Runnable> listeners = new ArrayList<>();
 
     public int getRowCount() {
@@ -49,13 +49,13 @@ public class ForecastTableModel {
                 .map(ForecastResult::getMatch)
                 .filter(match -> !matches.contains(match))
                 .collect(toList()));
-        Set<ForecastResult> currentForecasts = data.computeIfAbsent(person, person1 -> new HashSet<>());
-        currentForecasts.removeIf(forecast -> forecasts.stream().map(ForecastResult::getMatch)
-                .anyMatch(match -> match.equals(forecast.getMatch())));
         forecasts.forEach(forecastResult ->
                 forecastResult.setResultAndUpdateScore(results.get(forecastResult.getMatch())));
-        currentForecasts
-                .addAll(forecasts);
+        data.put(person, forecasts);
+        matches = data.values().stream()
+                .flatMap(results -> results.stream().map(ForecastResult::getMatch))
+                .distinct()
+                .collect(toList());
         fireModelChanged();
     }
 
