@@ -1,9 +1,9 @@
 package com.forecast.forecasts;
 
-import com.forecast.entries.Forecast;
 import com.forecast.entries.ForecastResult;
 import com.forecast.entries.Match;
 import com.forecast.entries.Person;
+import com.forecast.entries.Result;
 
 import java.util.*;
 
@@ -12,7 +12,7 @@ import static java.util.stream.Collectors.toList;
 
 public class ForecastTableModel {
     private final Map<Person, List<ForecastResult>> data = new HashMap<>();
-    private final Map<Match, Forecast> results = new HashMap<>();
+    private final Map<Match, Result> results = new HashMap<>();
     private List<Match> matches = new ArrayList<>();
     private final List<Runnable> listeners = new ArrayList<>();
 
@@ -63,7 +63,7 @@ public class ForecastTableModel {
         return matches;
     }
 
-    public void fillScore(Match match, Forecast result) {
+    public void fillScore(Match match, Result result) {
         results.put(match, result);
         data.values().stream()
                 .flatMap(Collection::stream)

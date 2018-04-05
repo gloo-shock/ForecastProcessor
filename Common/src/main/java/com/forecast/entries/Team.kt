@@ -1,17 +1,9 @@
 package com.forecast.entries
 
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType.AUTO
-import javax.persistence.Id
 
 @Entity
-data class Team(val name: String) {
-
-    @Id
-    @GeneratedValue(strategy = AUTO)
-    val id: Long? = 0
-
+data class Team(val name: String) : DatabaseEntry() {
     constructor() : this("")
 
     override fun equals(other: Any?): Boolean {

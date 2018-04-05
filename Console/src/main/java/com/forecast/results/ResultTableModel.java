@@ -1,8 +1,8 @@
 package com.forecast.results;
 
-import com.forecast.entries.Forecast;
 import com.forecast.entries.ForecastResult;
 import com.forecast.entries.Match;
+import com.forecast.entries.Result;
 import com.forecast.forecasts.ForecastTableModel;
 
 import javax.swing.table.AbstractTableModel;
@@ -15,7 +15,7 @@ public class ResultTableModel extends AbstractTableModel {
     public static final int MATCH_COLUMN = 0;
     public static final int SCORE_COLUMN = 1;
     private final ForecastTableModel forecastTableModel;
-    private final Map<Match, Forecast> result = new HashMap<>();
+    private final Map<Match, Result> result = new HashMap<>();
 
 
     public ResultTableModel(ForecastTableModel forecastTableModel) {
@@ -39,7 +39,7 @@ public class ResultTableModel extends AbstractTableModel {
         if (columnIndex == MATCH_COLUMN) {
             return match;
         }
-        Forecast forecast = result.get(match);
+        Result forecast = result.get(match);
         if (forecast != null) {
             return forecast.getHostScore() + "-" + forecast.getGuestScore();
         }
@@ -59,8 +59,10 @@ public class ResultTableModel extends AbstractTableModel {
             if (forecastResult == null) {
 //                JOptionPane.showMessageDialog();
             } else {
-                result.put(match, forecastResult.getForecast());
-                forecastTableModel.fillScore(match, forecastResult.getForecast());
+                Result result = new Result(forecastResult.getForecast().getHostScore(),
+                        forecastResult.getForecast().getGuestScore());
+                this.result.put(match, result);
+                forecastTableModel.fillScore(match, result);
             }
         }
     }

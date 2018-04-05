@@ -13,7 +13,7 @@ const val RIGHT_SCORE = 4
 
 const val BIG_DASH = 8212.toChar()
 
-class ForecastResult(val match: Match, val forecast: Forecast, var result: Forecast?) {
+class ForecastResult(val match: Match, val forecast: Forecast, var result: Result?) {
     var score = 0
 
     fun updateScore() {
@@ -36,7 +36,7 @@ class ForecastResult(val match: Match, val forecast: Forecast, var result: Forec
         return RIGHT_RESULT
     }
 
-    fun setResultAndUpdateScore(result: Forecast?) {
+    fun setResultAndUpdateScore(result: Result?) {
         this.result = result
         updateScore()
     }
