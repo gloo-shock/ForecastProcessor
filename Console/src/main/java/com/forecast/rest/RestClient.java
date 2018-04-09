@@ -4,6 +4,7 @@ import com.forecast.entries.Team;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 public class RestClient {
@@ -24,9 +25,8 @@ public class RestClient {
         client
                 .target(REST_URI)
                 .path("add")
-                .queryParam("name", team.getName())
-                .request(MediaType.TEXT_PLAIN_TYPE)
-                .get(String.class);
+                .request()
+                .post(Entity.entity(team, MediaType.APPLICATION_JSON_TYPE));
     }
 
     public String findAllTeams() {

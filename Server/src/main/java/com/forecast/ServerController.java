@@ -17,16 +17,15 @@ public class ServerController {
     }
 
 
-    @GetMapping(path = "/add") // Map ONLY GET Requests
-    public @ResponseBody
-    String addNewTeam(@RequestParam String name) {
-        Team team = new Team(name);
+    @PostMapping(path = "/add") // Map ONLY GET Requests
+    public String addNewTeam(@RequestBody Team team) {
         teamRepository.save(team);
         return "Saved";
     }
 
-    @GetMapping(path="/all")
-    public @ResponseBody Iterable<Team> getAllUsers() {
+    @GetMapping(path = "/all")
+    public @ResponseBody
+    Iterable<Team> getAllUsers() {
         return teamRepository.findAll();
     }
 

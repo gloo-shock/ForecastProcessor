@@ -1,8 +1,10 @@
 package com.forecast.entries
 
+import org.springframework.boot.jackson.JsonComponent
 import javax.persistence.Entity
 
 @Entity
+@JsonComponent
 data class Team(val name: String) : DatabaseEntry() {
     constructor() : this("")
 
