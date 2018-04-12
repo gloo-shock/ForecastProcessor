@@ -1,10 +1,13 @@
 package com.forecast.entries
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.lang.NumberFormatException
 import java.util.Arrays.asList
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 import java.util.stream.Stream
+import javax.persistence.Entity
+import javax.persistence.OneToOne
 
 const val NOTHING = 0
 const val RIGHT_RESULT = 2
@@ -13,7 +16,10 @@ const val RIGHT_SCORE = 4
 
 const val BIG_DASH = 8212.toChar()
 
-class ForecastResult(val match: Match, val forecast: Forecast, var result: Result?) {
+@Entity
+class ForecastResult(@JsonProperty @OneToOne val match: Match,
+                     @JsonProperty @OneToOne val forecast: Forecast,
+                     @JsonProperty @OneToOne var result: Result?) : DatabaseEntry() {
     var score = 0
 
     fun updateScore() {

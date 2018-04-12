@@ -1,10 +1,11 @@
 package com.forecast.entries
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.Entity
 
 @Entity
-data class Person(val firstName: String,
-                  val lastName: String) : DatabaseEntry() {
+data class Person(@JsonProperty val firstName: String,
+                  @JsonProperty val lastName: String) : DatabaseEntry() {
 
     constructor() : this("", "")
 

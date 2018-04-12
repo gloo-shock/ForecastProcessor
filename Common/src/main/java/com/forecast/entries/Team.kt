@@ -1,12 +1,11 @@
 package com.forecast.entries
 
-import org.springframework.boot.jackson.JsonComponent
+import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity
-@JsonComponent
-data class Team(@Column(unique = true) val name: String) : DatabaseEntry() {
+data class Team(@JsonProperty @Column(unique = true) val name: String) : DatabaseEntry() {
     constructor() : this("")
 
     override fun equals(other: Any?): Boolean {
