@@ -17,7 +17,7 @@ public class ServerController {
     }
 
 
-    @PostMapping(path = "/add") // Map ONLY GET Requests
+    @PostMapping(path = "/add")
     public String addNewTeam(@RequestBody Team team) {
         teamRepository.save(team);
         return "Saved";
