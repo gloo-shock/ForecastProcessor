@@ -18,12 +18,22 @@ public class MainFrame extends JFrame {
         super("Forecast Processor");
         setPreferredSize(new Dimension(1000, 700));
         setMinimumSize(new Dimension(1000, 700));
+        initTabbedPane();
+    }
+
+    private void initTabbedPane() {
+        JTabbedPane tabbedPane = new JTabbedPane();
+        ForecastPanel forecastPanel = new ForecastPanel(this);
+        tabbedPane.addTab(getString("forecasts"), forecastPanel);
+        add(tabbedPane);
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 int closeOption = showConfirmDialog(MainFrame.this, getString("confirmClosing"));
                 switch (closeOption) {
                     case JOptionPane.OK_OPTION:
+                        forecastPanel.saveTour();
                         e.getWindow().dispose();
                         break;
                     case JOptionPane.NO_OPTION:
@@ -34,12 +44,5 @@ public class MainFrame extends JFrame {
                 }
             }
         });
-        initTabbedPane();
-    }
-
-    private void initTabbedPane() {
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(getString("forecasts"), new ForecastPanel(this));
-        add(tabbedPane);
     }
 }

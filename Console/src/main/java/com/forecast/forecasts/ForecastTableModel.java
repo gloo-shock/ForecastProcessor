@@ -1,20 +1,24 @@
 package com.forecast.forecasts;
 
-import com.forecast.entries.ForecastResult;
-import com.forecast.entries.Match;
-import com.forecast.entries.Person;
-import com.forecast.entries.Result;
+import com.forecast.entries.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.forecast.resources.ResourceUtils.getString;
 import static java.util.stream.Collectors.toList;
 
 public class ForecastTableModel {
-    private final Map<Person, List<ForecastResult>> data = new HashMap<>();
     private final Map<Match, Result> results = new HashMap<>();
     private List<Match> matches = new ArrayList<>();
     private final List<Runnable> listeners = new ArrayList<>();
+    private final Tour tour;
+
+    public ForecastTableModel(Tour tour) {
+        this.tour = tour;
+    }
 
     public int getRowCount() {
         return matches.size() + 2;
@@ -32,10 +36,11 @@ public class ForecastTableModel {
         if (rowIndex == 0) {
             return person.getFirstName();
         }
+        List<ForecastResult> forecastResults = tour.getForecastResults(person);
         if (rowIndex == getRowCount() - 1) {
-            return data.get(person).stream().mapToInt(ForecastResult::getScore).sum() + " " + getString("pts");
+            return forecastResults.stream().mapToInt(ForecastResult::getScore).sum() + " " + getString("pts");
         }
-        ForecastResult result = data.get(person).stream()
+        ForecastResult result = forecastResults.stream()
                 .filter(forecast1 -> forecast1.getMatch().equals(match))
                 .findAny().orElse(null);
         if (result == null) {
@@ -51,9 +56,9 @@ public class ForecastTableModel {
                 .collect(toList()));
         forecasts.forEach(forecastResult ->
                 forecastResult.setResultAndUpdateScore(results.get(forecastResult.getMatch())));
-        data.put(person, forecasts);
-        matches = data.values().stream()
-                .flatMap(results -> results.stream().map(ForecastResult::getMatch))
+        tour.addPersonForecast(person, forecasts);
+        matches = tour.getPersonForecasts().stream()
+                .flatMap(personForecast -> personForecast.getForecasts().stream().map(ForecastResult::getMatch))
                 .distinct()
                 .collect(toList());
         fireModelChanged();
@@ -65,8 +70,8 @@ public class ForecastTableModel {
 
     public void fillScore(Match match, Result result) {
         results.put(match, result);
-        data.values().stream()
-                .flatMap(Collection::stream)
+        tour.getPersonForecasts().stream()
+                .flatMap(personForecast -> personForecast.getForecasts().stream())
                 .filter(forecastResult -> forecastResult.getMatch().equals(match))
                 .forEach(forecastResult -> forecastResult.setResultAndUpdateScore(result));
         fireModelChanged();

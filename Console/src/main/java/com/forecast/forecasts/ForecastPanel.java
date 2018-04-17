@@ -1,11 +1,13 @@
 package com.forecast.forecasts;
 
+import com.forecast.entries.Tour;
 import com.forecast.results.ResultTableModel;
 import com.forecast.utils.MyGridBagLayout;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.util.ArrayList;
 
 import static com.forecast.resources.ResourceUtils.getString;
 import static com.forecast.utils.MyGridBagConstraints.Anchor.*;
@@ -15,10 +17,11 @@ import static com.forecast.utils.MyGridBagLayout.getSharedConstraints;
 
 public class ForecastPanel extends JPanel {
 
-    private final ForecastTableModel tableModel = new ForecastTableModel();
+    private final ForecastTableModel tableModel;
 
     public ForecastPanel(JFrame parent) {
         super(new MyGridBagLayout());
+        this.tableModel = new ForecastTableModel(new Tour(new ArrayList<>()));
         add(forecastTable(parent, "team1"), getSharedConstraints(0, 0, 1, 1, 1, 1, GB_EAST, GB_BOTH, 8, 8, 0, 0));
         add(forecastTable(parent, "team2"), getSharedConstraints(0, 1, 1, 1, 1, 1, GB_EAST, GB_BOTH, 8, 8, 0, 0));
         add(resultTable(), getSharedConstraints(1, 0, 1, 1, 0, 1, GB_WEST, GB_BOTH, 42, 8, 0, 0));
@@ -73,5 +76,9 @@ public class ForecastPanel extends JPanel {
         panel.add(scrollPane,
                 getSharedConstraints(0, 1, 1, 1, 1, 1, GB_CENTER, GB_BOTH, 8, 0, 0, 0));
         return panel;
+    }
+
+    public void saveTour() {
+
     }
 }
