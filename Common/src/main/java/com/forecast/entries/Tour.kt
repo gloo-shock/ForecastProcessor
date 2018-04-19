@@ -2,11 +2,17 @@ package com.forecast.entries
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.lang.System.currentTimeMillis
+import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.OneToMany
+import javax.persistence.Table
 
 @Entity
-data class Tour(@JsonProperty @OneToMany val personForecasts: MutableList<PersonForecast>) : DatabaseEntry() {
+@Table(name = "tours")
+data class Tour(@JsonProperty @OneToMany(cascade = [CascadeType.ALL]) val personForecasts: MutableList<PersonForecast>) : DatabaseEntry() {
+
+    constructor() : this(ArrayList())
+
     @JsonProperty
     val timestamp: Long = currentTimeMillis();
 

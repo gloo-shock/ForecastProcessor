@@ -84,4 +84,8 @@ public class ForecastTableModel {
     private void fireModelChanged() {
         listeners.forEach(Runnable::run);
     }
+
+    public Tour getTour() {
+        return tour;
+    }
 }

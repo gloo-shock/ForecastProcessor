@@ -6,7 +6,7 @@ import javax.persistence.Table
 
 @Entity
 @Inheritance
-@Table(name = "ForecastsAndResults")
+@Table(name = "forecasts_and_results")
 abstract class AbstractResult(val hostScore: Int,
                               val guestScore: Int,
                               val isMatchResult: Boolean) : DatabaseEntry() {

@@ -10,6 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static com.forecast.resources.ResourceUtils.getString;
+import static com.forecast.rest.RestClient.restClient;
 import static com.forecast.utils.MyGridBagConstraints.Anchor.*;
 import static com.forecast.utils.MyGridBagConstraints.Fill.GB_BOTH;
 import static com.forecast.utils.MyGridBagConstraints.Fill.GB_NONE;
@@ -78,7 +79,7 @@ public class ForecastPanel extends JPanel {
         return panel;
     }
 
-    public void saveTour() {
-
+    public void saveData() {
+        restClient().saveTour(tableModel.getTour());
     }
 }

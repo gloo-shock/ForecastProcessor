@@ -1,39 +1,48 @@
 package com.forecast.rest;
 
 import com.forecast.entries.Team;
+import com.forecast.entries.Tour;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import static javax.ws.rs.client.Entity.entity;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 public class RestClient {
     private static final String REST_URI
             = "http://localhost:8080";
+    private static final RestClient INSTANCE = new RestClient();
 
-    private Client client = ClientBuilder.newClient();
-
-    public String greeting() {
-        return client
-                .target(REST_URI)
-                .path("greeting")
-                .request(MediaType.TEXT_PLAIN_TYPE)
-                .get(String.class);
+    public static RestClient restClient() {
+        return INSTANCE;
     }
 
+    private WebTarget target = ClientBuilder.newClient().target(REST_URI);
+
     public void addTeam(Team team) {
-        client
-                .target(REST_URI)
+        target
                 .path("add")
                 .request()
-                .post(Entity.entity(team, MediaType.APPLICATION_JSON_TYPE));
+                .post(entity(team, APPLICATION_JSON_TYPE));
     }
 
     public String findAllTeams() {
-        return client
-                .target(REST_URI)
+        return target
                 .path("all")
                 .request(MediaType.APPLICATION_JSON)
                 .get(String.class);
     }
+
+    public void saveTour(Tour tour) {
+        Response response = target.path("tour/save")
+                .request()
+                .post(entity(tour, APPLICATION_JSON_TYPE));
+        if (response.getStatus() != Response.Status.OK.getStatusCode()) {
+            throw new RuntimeException("Failed to save tour");
+        }
+    }
+
 }

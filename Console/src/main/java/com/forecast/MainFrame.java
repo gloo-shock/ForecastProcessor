@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
                 int closeOption = showConfirmDialog(MainFrame.this, getString("confirmClosing"));
                 switch (closeOption) {
                     case JOptionPane.OK_OPTION:
-                        forecastPanel.saveTour();
+                        forecastPanel.saveData();
                         e.getWindow().dispose();
                         break;
                     case JOptionPane.NO_OPTION:

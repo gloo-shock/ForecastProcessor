@@ -13,7 +13,7 @@ public class ForecastController {
     private TourRepository tourRepository;
 
     @PostMapping(path = "/save")
-    public ResponseEntity<String> addNewTeam(@RequestBody Tour tour) {
+    public ResponseEntity<String> saveTour(@RequestBody Tour tour) {
         tourRepository.save(tour);
         return ResponseEntity.ok("OK");
     }
@@ -21,6 +21,6 @@ public class ForecastController {
     @GetMapping(path = "/last")
     public @ResponseBody
     Tour getLastTour() {
-        return tourRepository.findTopByTimestampDesc();
+        return tourRepository.findFirstByOrderByTimestampDesc();
     }
 }

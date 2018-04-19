@@ -6,8 +6,7 @@ import java.util.Arrays.asList
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 import java.util.stream.Stream
-import javax.persistence.Entity
-import javax.persistence.OneToOne
+import javax.persistence.*
 
 const val NOTHING = 0
 const val RIGHT_RESULT = 2
@@ -17,9 +16,13 @@ const val RIGHT_SCORE = 4
 const val BIG_DASH = 8212.toChar()
 
 @Entity
-class ForecastResult(@JsonProperty @OneToOne val match: Match,
-                     @JsonProperty @OneToOne val forecast: Forecast,
-                     @JsonProperty @OneToOne var result: Result?) : DatabaseEntry() {
+@Table(name = "forecast_results")
+class ForecastResult(@JsonProperty @ManyToOne(cascade = [CascadeType.MERGE]) val match: Match,
+                     @JsonProperty @OneToOne(cascade = [CascadeType.ALL]) val forecast: Forecast,
+                     @JsonProperty @ManyToOne(cascade = [CascadeType.MERGE]) var result: Result?) : DatabaseEntry() {
+
+    constructor() : this(Match(), Forecast(), Result())
+
     var score = 0
 
     fun updateScore() {
