@@ -15,8 +15,13 @@ public class ForecastServer {
     private static final Logger logger = LoggerFactory.getLogger(ForecastServer.class);
 
     public static void main(String[] args) {
-        startH2Server();
-        SpringApplication.run(ForecastServer.class, args);
+        try {
+            startH2Server();
+            SpringApplication.run(ForecastServer.class, args);
+        } catch (Throwable throwable) {
+            System.out.println(throwable);
+        }
+
     }
 
     private static void startH2Server() {

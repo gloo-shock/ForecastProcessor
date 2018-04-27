@@ -1,10 +1,12 @@
 package com.forecast.rest;
 
+import com.forecast.entries.Person;
 import com.forecast.entries.Team;
 import com.forecast.entries.Tour;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -42,6 +44,22 @@ public class RestClient {
                 .post(entity(tour, APPLICATION_JSON_TYPE));
         if (response.getStatus() != Response.Status.OK.getStatusCode()) {
             throw new RuntimeException("Failed to save tour");
+        }
+    }
+
+    public Iterable<Person> loadPersons() {
+        return target.path("person/all")
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<Iterable<Person>>() {
+                });
+    }
+
+    public void savePerson(Person person) {
+        Response response = target.path("person/save")
+                .request()
+                .post(entity(person, APPLICATION_JSON_TYPE));
+        if (response.getStatus() != Response.Status.OK.getStatusCode()) {
+            throw new RuntimeException("Failed to save person");
         }
     }
 

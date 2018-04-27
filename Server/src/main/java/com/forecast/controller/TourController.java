@@ -1,4 +1,4 @@
-package com.forecast;
+package com.forecast.controller;
 
 import com.forecast.entries.Tour;
 import com.forecast.repository.TourRepository;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/tour")
-public class ForecastController {
+public class TourController {
     @Autowired
     private TourRepository tourRepository;
 
