@@ -24,7 +24,6 @@ public class RestClientTest {
         restClient.savePerson(person1);
         Person person2 = new Person("Иван", "Петров");
         restClient.savePerson(person2);
-
         assertThat(restClient.loadPersons()).containsOnly(person1, person2);
     }
 }

@@ -6,10 +6,12 @@ import com.forecast.utils.MyGridBagLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.forecast.resources.ResourceUtils.getString;
+import static com.forecast.rest.RestClient.restClient;
 import static com.forecast.utils.MyGridBagConstraints.Anchor.*;
 import static com.forecast.utils.MyGridBagConstraints.Fill.*;
 import static com.forecast.utils.MyGridBagLayout.getSharedConstraints;
@@ -49,7 +51,8 @@ public class AddForecastDialog extends JDialog {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, X_AXIS));
         personCombobox = new JComboBox<>();
-        DefaultComboBoxModel<Person> comboBoxModel = new DefaultComboBoxModel<>();
+        List<Person> people = restClient().loadPersons();
+        DefaultComboBoxModel<Person> comboBoxModel = new DefaultComboBoxModel<>(people.toArray(new Person[people.size()]));
         personCombobox.setModel(comboBoxModel);
         JButton addPersonButton = new JButton(new ImageIcon(getSystemResource("icons/plus.png")));
         addPersonButton.addActionListener(e -> addPerson(panel, comboBoxModel));

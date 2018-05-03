@@ -9,6 +9,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
@@ -47,10 +48,10 @@ public class RestClient {
         }
     }
 
-    public Iterable<Person> loadPersons() {
+    public List<Person> loadPersons() {
         return target.path("person/all")
                 .request(MediaType.APPLICATION_JSON)
-                .get(new GenericType<Iterable<Person>>() {
+                .get(new GenericType<List<Person>>() {
                 });
     }
 
@@ -60,6 +61,15 @@ public class RestClient {
                 .post(entity(person, APPLICATION_JSON_TYPE));
         if (response.getStatus() != Response.Status.OK.getStatusCode()) {
             throw new RuntimeException("Failed to save person");
+        }
+    }
+
+    public void deletePerson(Person person) {
+        Response response = target.path("person/delete")
+                .request()
+                .post(entity(person, APPLICATION_JSON_TYPE));
+        if (response.getStatus() != Response.Status.OK.getStatusCode()) {
+            throw new RuntimeException("Failed to delete person");
         }
     }
 
