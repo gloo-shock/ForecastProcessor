@@ -17,7 +17,7 @@ public class PersonController {
     @GetMapping(path = "/all")
     public @ResponseBody
     List<Person> getAllPerson() {
-        return (List<Person>) personRepository.findAll();
+        return personRepository.findAllByForecastTeamIsNotNull();
     }
 
     @PostMapping("/save")
