@@ -8,6 +8,6 @@ import javax.persistence.MappedSuperclass
 @MappedSuperclass
 abstract class DatabaseEntry {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = 0
 }
