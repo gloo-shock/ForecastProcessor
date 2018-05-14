@@ -1,7 +1,6 @@
 package com.forecast.rest;
 
 import com.forecast.entries.Person;
-import com.forecast.entries.Team;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -11,13 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RestClientTest {
     private RestClient restClient = new RestClient();
 
-
-    @Test
-    public void team() {
-        restClient.addTeam(new Team("ЦСКА"));
-        System.out.println(restClient.findAllTeams());
-    }
-
     @Test
     public void person() {
         Person person1 = new Person("Андрей", "Глушок");
@@ -25,5 +17,11 @@ public class RestClientTest {
         Person person2 = new Person("Иван", "Петров");
         restClient.savePerson(person2);
         assertThat(restClient.loadPersons()).containsOnly(person1, person2);
+    }
+
+    @Test
+    public void team() {
+        System.out.println(restClient.getTeams("Арсенал"));
+        System.out.println(restClient.getTeams("Брайтон"));
     }
 }

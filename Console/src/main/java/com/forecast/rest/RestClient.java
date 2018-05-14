@@ -7,11 +7,11 @@ import com.forecast.entries.Tour;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static javax.ws.rs.client.Entity.entity;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 public class RestClient {
@@ -35,7 +35,7 @@ public class RestClient {
     public String findAllTeams() {
         return target
                 .path("all")
-                .request(MediaType.APPLICATION_JSON)
+                .request(APPLICATION_JSON)
                 .get(String.class);
     }
 
@@ -50,7 +50,7 @@ public class RestClient {
 
     public List<Person> loadPersons() {
         return target.path("person/all")
-                .request(MediaType.APPLICATION_JSON)
+                .request(APPLICATION_JSON)
                 .get(new GenericType<List<Person>>() {
                 });
     }
@@ -71,6 +71,14 @@ public class RestClient {
         if (response.getStatus() != Response.Status.OK.getStatusCode()) {
             throw new RuntimeException("Failed to delete person");
         }
+    }
+
+    public List<Team> getTeams(String name) {
+        return target.path("tour/team")
+                .queryParam("name", name)
+                .request(APPLICATION_JSON)
+                .get(new GenericType<List<Team>>() {
+                });
     }
 
 }
