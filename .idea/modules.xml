@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Common.iml" filepath="$PROJECT_DIR$/.idea/modules/Common.iml" group="Common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Common/Common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Common/Common_main.iml" group="Common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Common/Common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Common/Common_test.iml" group="Common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Console.iml" filepath="$PROJECT_DIR$/.idea/modules/Console.iml" group="Console" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Console/Console_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Console/Console_main.iml" group="Console" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Console/Console_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Console/Console_test.iml" group="Console" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ForecastProcessor.iml" filepath="$PROJECT_DIR$/.idea/modules/ForecastProcessor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Server.iml" filepath="$PROJECT_DIR$/.idea/modules/Server.iml" group="Server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Server/Server_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Server/Server_main.iml" group="Server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Server/Server_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Server/Server_test.iml" group="Server" />
     </modules>
   </component>
 </project>
