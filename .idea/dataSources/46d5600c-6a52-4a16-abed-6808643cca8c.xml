@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="forecastProcessor">
+  <database-model serializer="dbm" rdbms="H2" format-version="4.7">
+    <root id="1"/>
+    <database id="2" parent="1" name="FORECASTPROCESSOR">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </database>
+    <schema id="3" parent="2" name="INFORMATION_SCHEMA"/>
+    <schema id="4" parent="2" name="PUBLIC">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <table id="5" parent="4" name="FORECASTS_AND_RESULTS"/>
+    <table id="6" parent="4" name="FORECAST_RESULTS"/>
+    <table id="7" parent="4" name="MATCHES"/>
+    <table id="8" parent="4" name="PERSONS"/>
+    <table id="9" parent="4" name="PERSON_FORECAST_LINK"/>
+    <table id="10" parent="4" name="PERSON_FORECAST_LINK_FORECASTS"/>
+    <table id="11" parent="4" name="TEAMS"/>
+    <table id="12" parent="4" name="TOURS"/>
+    <table id="13" parent="4" name="TOURS_PERSON_FORECASTS"/>
+    <column id="14" parent="5" name="DTYPE">
+      <Position>1</Position>
+      <DataType>VARCHAR(31)|12</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="15" parent="5" name="ID">
+      <Position>2</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_6BC00C73_FB67_4375_9594_A700E02A4829)</DefaultExpression>
+    </column>
+    <column id="16" parent="5" name="GUEST_SCORE">
+      <Position>3</Position>
+      <DataType>INTEGER(10)|4</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="17" parent="5" name="HOST_SCORE">
+      <Position>4</Position>
+      <DataType>INTEGER(10)|4</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="18" parent="5" name="IS_MATCH_RESULT">
+      <Position>5</Position>
+      <DataType>BOOLEAN|16</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="19" parent="5" name="CONSTRAINT_3">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="20" parent="6" name="ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_71916468_810C_4C5C_9EAA_62B688350773)</DefaultExpression>
+    </column>
+    <column id="21" parent="6" name="SCORE">
+      <Position>2</Position>
+      <DataType>INTEGER(10)|4</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="22" parent="6" name="FORECAST_ID">
+      <Position>3</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+    </column>
+    <column id="23" parent="6" name="MATCH_ID">
+      <Position>4</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+    </column>
+    <column id="24" parent="6" name="RESULT_ID">
+      <Position>5</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+    </column>
+    <key id="25" parent="6" name="CONSTRAINT_A">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="26" parent="6" name="FKRSQJUCK7BRBHCY1BGE1FSEOV3">
+      <ColNames>FORECAST_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>FORECASTS_AND_RESULTS</RefTableName>
+      <RefKeyName>CONSTRAINT_3</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="27" parent="6" name="FKIBR8FN15E2EACNX6ST26FVQJ4">
+      <ColNames>MATCH_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>MATCHES</RefTableName>
+      <RefKeyName>CONSTRAINT_5</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="28" parent="6" name="FKB0YWCVR4Y3QXSGVIPYF79YU32">
+      <ColNames>RESULT_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>FORECASTS_AND_RESULTS</RefTableName>
+      <RefKeyName>CONSTRAINT_3</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="29" parent="7" name="ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_B7EAC211_E3C8_46A2_9361_FAEBB4E7CB30)</DefaultExpression>
+    </column>
+    <column id="30" parent="7" name="GUEST_ID">
+      <Position>2</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+    </column>
+    <column id="31" parent="7" name="HOST_ID">
+      <Position>3</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+    </column>
+    <key id="32" parent="7" name="CONSTRAINT_5">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="33" parent="7" name="FKQPXDRD325ETID6VBGMBVCWKNA">
+      <ColNames>GUEST_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>TEAMS</RefTableName>
+      <RefKeyName>CONSTRAINT_4</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="34" parent="7" name="FKSSXU7062JU6H6NPKLST42JJNT">
+      <ColNames>HOST_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>TEAMS</RefTableName>
+      <RefKeyName>CONSTRAINT_4</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="35" parent="8" name="ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_6EC1639C_26E5_4779_B9FF_6013EA13B818)</DefaultExpression>
+    </column>
+    <column id="36" parent="8" name="FIRST_NAME">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12</DataType>
+    </column>
+    <column id="37" parent="8" name="FORECAST_TEAM">
+      <Position>3</Position>
+      <DataType>VARCHAR(255)|12</DataType>
+    </column>
+    <column id="38" parent="8" name="LAST_NAME">
+      <Position>4</Position>
+      <DataType>VARCHAR(255)|12</DataType>
+    </column>
+    <key id="39" parent="8" name="CONSTRAINT_2">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="40" parent="9" name="ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_75E17022_CDC0_4752_8B1A_6FC85D0631CC)</DefaultExpression>
+    </column>
+    <column id="41" parent="9" name="PERSON_ID">
+      <Position>2</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+    </column>
+    <key id="42" parent="9" name="CONSTRAINT_C">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="43" parent="9" name="FKN7QNF27PHNV2UFXCASEB5L1H9">
+      <ColNames>PERSON_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>PERSONS</RefTableName>
+      <RefKeyName>CONSTRAINT_2</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="44" parent="10" name="PERSON_FORECAST_ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="45" parent="10" name="FORECASTS_ID">
+      <Position>2</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <foreign-key id="46" parent="10" name="FKO8L0U2RY5G3WNM0W752QUFWMO">
+      <ColNames>PERSON_FORECAST_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>PERSON_FORECAST_LINK</RefTableName>
+      <RefKeyName>CONSTRAINT_C</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="47" parent="10" name="FK9D47E8CX6VPA1LCK1P4I1ULEK">
+      <ColNames>FORECASTS_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>FORECAST_RESULTS</RefTableName>
+      <RefKeyName>CONSTRAINT_A</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="48" parent="11" name="ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_13F5B883_3027_48C2_A67F_7C4176577269)</DefaultExpression>
+    </column>
+    <column id="49" parent="11" name="LEAGUE">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12</DataType>
+    </column>
+    <column id="50" parent="11" name="NAME">
+      <Position>3</Position>
+      <DataType>VARCHAR(255)|12</DataType>
+    </column>
+    <column id="51" parent="11" name="NAME2">
+      <Position>4</Position>
+      <DataType>VARCHAR(255)|12</DataType>
+    </column>
+    <column id="52" parent="11" name="NAME3">
+      <Position>5</Position>
+      <DataType>VARCHAR(255)|12</DataType>
+    </column>
+    <index id="53" parent="11" name="UKF4UDQ43G44MIVW3VIXKJKP67X_INDEX_4">
+      <ColNames>NAME
+LEAGUE</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="54" parent="11" name="CONSTRAINT_4">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="55" parent="12" name="ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <DefaultExpression>(NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_51AFCACE_8772_450C_BCF9_AAF0036D16AE)</DefaultExpression>
+    </column>
+    <column id="56" parent="12" name="TIMESTAMP">
+      <Position>2</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="57" parent="12" name="CONSTRAINT_4C">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="58" parent="13" name="TOUR_ID">
+      <Position>1</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="59" parent="13" name="PERSON_FORECASTS_ID">
+      <Position>2</Position>
+      <DataType>BIGINT(19)|-5</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <foreign-key id="60" parent="13" name="FKSLQLNVV2UIDGJU1YLBW3K9VEO">
+      <ColNames>TOUR_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>TOURS</RefTableName>
+      <RefKeyName>CONSTRAINT_4C</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="61" parent="13" name="FK1G85FMUESOH3IY98P53R3DA1H">
+      <ColNames>PERSON_FORECASTS_ID</ColNames>
+      <RefSchemaName>PUBLIC</RefSchemaName>
+      <RefTableName>PERSON_FORECAST_LINK</RefTableName>
+      <RefKeyName>CONSTRAINT_C</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+  </database-model>
+</dataSource>
